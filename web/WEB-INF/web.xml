@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!--
+        SpringMVC 是一个基于 DispatcherServlet 的 MVC 框架
+        每一个请求最先访问的都是 DispatcherServlet，DispatcherServlet 负责转发每一个 Request 请求给相应的 Handler
+        Handler 处理以后再返回相应的视图(View)和模型(Model)
+        返回的视图和模型都可以不指定，即可以只返回 Model 或只返回 View 或都不返回
+
+
+        SpringMVC 的默认配置文件为 web.xml，在这个文件中可以设置其它配置文件
+
+        当需要载入多个 spring 相关的配置文件时，首先加载 ContextLoaderListener 类，再指定 context-param 中指定多个 spring 配置文件
+        在当前文件中，即为 classpath 路径下的 spring-config.xml 文件
+
+        在 <servlet> 标签中指明了一个名为 servlet-name 的 servlet
+        其中在 servlet-name 中如果没有指定 init-param 属性，那么系统自动寻找的 spring 配置文件为 [servlet-name]-servlet.xml
+        在当前文件中，即为 spring-servlet.xml 文件
+
+        并且 ContextLoaderListener 类比加载 DispatcherServlet 类要早
+        即 SpringMVC 先读取 spring-config.xml 文件，后读取 spring-servlet.xml 文件
+
+        在 servlet-mapping 中指明了所有匹配 url-pattern 的网络请求都交由名为 servlet-name 的 servlet 处理
+        <url-pattern> 用于指定当前 servlet 可以处理的请求 url
+        <url-pattern>/</url-pattern> 指明指向网站根目录下所有的页面的请求都可以被名为 spring 的 servlet 处理
+    -->
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-config.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>spring</servlet-name>
+        <servlet-class>
+            org.springframework.web.servlet.DispatcherServlet
+        </servlet-class>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+</web-app>
