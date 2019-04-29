@@ -9,7 +9,6 @@ out
 gen
 /src/main/resources/mysql.properties
 /target/
-/lib/
 /web/WEB-INF/classes/
 /web/WEB-INF/lib/
 /web/static/
