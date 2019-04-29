@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <!--
+        @controller -> 控制层
+        @service    -> 业务层
+        @repository -> 持久层（数据访问层）
+
+        对 @controller 注解的 bean 必须放在 spring-servlet.xml 中扫描
+
+        <mvc:resources > 标签这里是对静态资源做了一个映射
+        注意是将 url 中的 /discuss/image/ 映射到服务器上的 /static/images，而不是反过来
+    -->
+
+    <context:component-scan base-package="com.corydon.miu.web"/>
+
+    <bean id="utf8Charset" class="java.nio.charset.Charset"
+          factory-method="forName">
+        <constructor-arg value="UTF-8"/>
+    </bean>
+
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <util:list>
+                        <value>text/plain;charset=UTF-8</value>
+                    </util:list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:resources location="/static/images/" mapping="/discuss/image/**"/>
+    <mvc:resources location="/static/pic/" mapping="/user/pic/**"/>
+
+</beans>
