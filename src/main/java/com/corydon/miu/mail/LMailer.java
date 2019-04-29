@@ -13,17 +13,17 @@ import java.util.Properties;
 public class LMailer {
     /** 邮件发送协议*/
     private static final String PROTOCOL_SMTP = "smtp";
-
     /** SMTP邮件服务器*/
     private static final String SMTP_HOST = "smtp.163.com";
-
     // SMTP邮件服务器默认端口
-    private static final String SMTP_PORT = "25";
-
+    private static final String SMTP_PORT = "465";
     // 是否要求身份认证
     private static final String IS_AUTH = "true";
     // 是否启用调试模式（启用调试模式可打印客户端与服务器交互过程时一问一答的响应消息）
     private static final String IS_ENABLED_DEBUG_MOD = "true";
+    // 是否开启 SSL 协议
+    private static final String IS_SSL_ENABLED = "true";
+
     private static final Logger logger=Logger.getLogger(LMailer.class);
     private static final String CLASS_PATH=LMailer.class.getResource("/").getPath();
     private static Properties sessionProps;
@@ -35,6 +35,7 @@ public class LMailer {
         sessionProps.setProperty("mail.smtp.port",SMTP_PORT);
         sessionProps.setProperty("mail.smtp.auth",IS_AUTH);
         sessionProps.setProperty("mail.debug",IS_ENABLED_DEBUG_MOD);
+        sessionProps.setProperty("mail.smtp.ssl.enable", IS_SSL_ENABLED);   // 465 端口使用了 SSL 协议
     }
     public static void main(String[] args){
 
