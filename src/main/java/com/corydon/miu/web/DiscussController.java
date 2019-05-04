@@ -65,6 +65,23 @@ public class DiscussController {
         return response.toString();
     }
 
+    @RequestMapping(value = "/getDiscussById",method = RequestMethod.POST)
+    @ResponseBody
+    public String getDiscussById(@RequestParam(name = "mail")String mail,
+                                 @RequestParam(name = "passwords")String passwords,
+                                 @RequestParam(name = "discussId")String discussId){
+        JsonObject response=new JsonObject();
+        if(!userService.hasUserAvailable(mail,passwords)){
+            response.addProperty("result",RESULT_ACCESS_DENIED);
+            response.addProperty("data","拒绝访问");
+            return response.toString();
+        }
+        Discuss discuss=discussService.findDiscussById(discussId);
+        response.addProperty("result",RESULT_OK);
+        response.addProperty("data",gson.toJson(discuss, Discuss.class));
+        return response.toString();
+    }
+
     @RequestMapping(value = "/getComments",method = RequestMethod.POST)
     @ResponseBody
     public String getComments(@RequestParam(name = "mail")String mail,

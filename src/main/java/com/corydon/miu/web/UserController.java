@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static com.corydon.miu.web.Configures.*;
@@ -54,13 +56,17 @@ public class UserController {
         JsonArray array=new JsonArray();
         List<DiscussComment> discussCommentList=discussService.findAllCommentByUserMail(mail);
         for(int i=0;i<discussCommentList.size();i++){
+            SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             JsonObject object=new JsonObject();
             DiscussComment discussComment=discussCommentList.get(i);
             Discuss discuss=discussService.findDiscussById(discussComment.getDiscussId());
             User author=userService.findUser(discuss.getAuthorMail());
             object.addProperty("comment",discussComment.getContent());
+            object.addProperty("date", format.format(discussComment.getCreateDate()));
             object.addProperty("title",discuss.getTitle());
             object.addProperty("authorName",author.getName());
+            object.addProperty("authorPic", author.getPicUrl());
+            object.addProperty("discussId", discuss.getId());
             array.add(object);
         }
         response.addProperty("result",RESULT_OK);
